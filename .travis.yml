@@ -1,29 +1,21 @@
----
 language: minimal
 
 env:
   global:
     - DATADOG_API_KEY=${DATADOG_API_KEY}
     - DATADOG_EVENT_TITLE="Build Notification"
-    - DATADOG_EVENT_TEXT="Travis CI Build for Defense Company by Michael Mendy"
+    - DATADOG_EVENT_TEXT="Travis CI build for lmco"
     - DATADOG_EVENT_PRIORITY="high"
-    - DATADOG_EVENT_TAGS="environment:ci,project:lmco"
+    - DATADOG_EVENT_TAGS="environment:ci,project:raidersinthelostark"
     - DATADOG_EVENT_ALERT_TYPE="info"
 
 before_install:
-    curl -X POST -H "Content-type: application/json" 
-    -d "{
-      \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
-      \"text\": \"${DATADOG_EVENT_TEXT} failed.\",
-      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
-      \"tags\": \"${DATADOG_EVENT_TAGS}\",
-      \"alert_type\": \"error\"
-    }" 
-    "https://api.datadoghq.com/api/v1/events?api
-    
+    - echo "test" 
+
 install: skip
 
 after_success:
+  - >
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
@@ -35,6 +27,7 @@ after_success:
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
 
 after_failure:
+  - >
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
