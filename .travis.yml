@@ -22,9 +22,7 @@ before_install:
    - chef gem install json_spec -v '~> 1.1.4'
    - chef gem install chef-handler-datadog
 
-install: skip
-
-after_script:
+after_success:
   - >
     curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     -H "Content-Type: application/json" \
@@ -35,24 +33,18 @@ after_script:
         "attributes": {
             "resource": {
                 "level": "pipeline",
-                "unique_id": "8d3a9c03-be5d-4b8e-8b67-4a6dea7bb6a9",
-                "name": "lmco",
+                "unique_id": "${TRAVIS_BUILD_ID}",
+                "name": "${TRAVIS_REPO_SLUG}",
                 "git": {
-                    "repository_url": "https://github.com/Montana/travis-datadog-notif-push/tree/master",
+                    "repository_url": "https://github.com/${TRAVIS_REPO_SLUG}",
                     "author_email": "montana@linux.com",
-                    "sha": "cf852e17dea14008ac83036430843a1c"
+                    "sha": "${TRAVIS_COMMIT}"
                 },
                 "status": "success",
-                "start": "2024-01-26T22:15:59-08:00",
-                "end": "2024-01-26T22:15:59-08:00",
+                "start": "${TRAVIS_BUILD_STARTED_AT}",
+                "end": "${TRAVIS_BUILD_FINISHED_AT}",
                 "partial_retry": false,
-                "url": "https://app.travis-ci.com/Montana/travis-datadog-notif-push"
-            }
-        },
-        "type": "cipipeline_resource_request"
-      }
-    }
-    EOF
+                "url": "https://travis-ci.com/github/${TRAVIS_REPO_SLUG}/
 
 after_success:
   - >
