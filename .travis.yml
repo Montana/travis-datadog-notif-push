@@ -9,12 +9,12 @@ addons:
       
 env:
   global:
-    - DATADOG_API_KEY=${DATADOG_API_KEY}
+    - DATADOG_API_KEY={$DATADOG_API_KEY}
     - DATADOG_EVENT_TITLE="Build Notification"
-    - DATADOG_EVENT_TEXT="Travis CI build for lmco"
+    - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
-    - DATADOG_EVENT_TAGS="environment:ci,project:raidersinthelostark"
-    - DATADOG_EVENT_ALERT_TYPE="info"
+    - DATADOG_EVENT_TAGS="environment:ci,project:lmco/variable"
+    - DATADOG_EVENT_ALERT_TYPE="regression"
 
 before_install:
    - eval "$(/opt/chefdk/bin/chef shell-init bash)"
