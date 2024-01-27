@@ -1,5 +1,12 @@
 language: minimal
 
+addons:
+  apt:
+    sources:
+      - chef-stable-precise
+    packages:
+      - chefdk
+      
 env:
   global:
     - DATADOG_API_KEY=${DATADOG_API_KEY}
@@ -10,12 +17,15 @@ env:
     - DATADOG_EVENT_ALERT_TYPE="info"
 
 before_install:
-    - echo "test" 
+   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
+   - chef gem install coveralls -v '0.8.19'
+   - chef gem install json_spec -v '~> 1.1.4'
+   - chef gem install chef-handler-datadog
 
 install: skip
 
 after_success:
-  - 
+  - >
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
@@ -27,7 +37,7 @@ after_success:
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
 
 after_failure:
-  - 
+  - >
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
