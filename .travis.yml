@@ -6,10 +6,10 @@ addons:
       - chef-stable-precise
     packages:
       - chefdk
-
+      
 env:
   global:
-    - DATADOG_API_KEY=${DATADOG_API_KEY} 
+    - DATADOG_API_KEY={$DATADOG_API_KEY}
     - DATADOG_EVENT_TITLE="Build Notification"
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
@@ -22,36 +22,8 @@ before_install:
    - chef gem install json_spec -v '~> 1.1.4'
    - chef gem install chef-handler-datadog
 
-after_script:
-   - >
-    curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
-    -H "Content-Type: application/json" \
-    -H "DD-API-KEY: ${DATADOG_API_KEY}" \
-    -d @- <<EOF
-    {
-      "data": {
-        "attributes": {
-            "resource": {
-                "level": "pipeline",
-                "unique_id": "${TRAVIS_BUILD_ID}",
-                "name": "${TRAVIS_REPO_SLUG}",
-                "git": {
-                    "repository_url": "https://github.com/${TRAVIS_REPO_SLUG}",
-                    "author_email": "montana@linux.com",
-                    "sha": "${TRAVIS_COMMIT}"
-                },
-                "status": "success",
-                "start": "${TRAVIS_BUILD_STARTED_AT}",
-                "end": "${TRAVIS_BUILD_FINISHED_AT}",
-                "partial_retry": false,
-                "url": "https://app-travis-ci.com/montana/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}"
-            }
-        },
-        "type": "travis_ci.job.finished"
-      }
-    }
-    EOF
-    
+install: skip
+
 after_success:
   - >
     curl -X POST -H "Content-type: application/json" 
@@ -69,5 +41,9 @@ after_failure:
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
-      \"text\": \"
-
+      \"text\": \"${DATADOG_EVENT_TEXT} failed.\",
+      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
+      \"tags\": \"${DATADOG_EVENT_TAGS}\",
+      \"alert_type\": \"error\"
+    }" 
+    "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
