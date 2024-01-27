@@ -50,7 +50,7 @@ after_success:
     },
     "type": "cipipeline_resource_request"
   }
-}               
+}"             
 
 after_failure:
   - >
