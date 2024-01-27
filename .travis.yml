@@ -23,11 +23,11 @@ before_install:
    - chef gem install chef-handler-datadog
 
 after_script:
-  - >
+   - >
     curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DATADOG_API_KEY}" \
-    -d @- << EOF
+    -d @- <<EOF
     {
       "data": {
         "attributes": {
@@ -36,7 +36,7 @@ after_script:
                 "unique_id": "${TRAVIS_BUILD_ID}",
                 "name": "${TRAVIS_REPO_SLUG}",
                 "git": {
-                    "repository_url": "https://github.com/Montana/travis-datadog-notif-push",
+                    "repository_url": "https://github.com/${TRAVIS_REPO_SLUG}",
                     "author_email": "montana@linux.com",
                     "sha": "${TRAVIS_COMMIT}"
                 },
@@ -44,14 +44,14 @@ after_script:
                 "start": "${TRAVIS_BUILD_STARTED_AT}",
                 "end": "${TRAVIS_BUILD_FINISHED_AT}",
                 "partial_retry": false,
-                "url": "https://app.travis-ci.com/github/Montana/travis-datadog-notif-push?serverType=git"
+                "url": "https://app-travis-ci.com/montana/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}"
             }
         },
         "type": "cipipeline_resource_request"
       }
     }
     EOF
-
+    
 after_success:
   - >
     curl -X POST -H "Content-type: application/json" 
