@@ -9,7 +9,7 @@ addons:
 
 env:
   global:
-    - DATADOG_API_KEY=${DATADOG_API_KEY} # Ensure proper variable syntax
+    - DATADOG_API_KEY=${DATADOG_API_KEY} 
     - DATADOG_EVENT_TITLE="Build Notification"
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
@@ -47,7 +47,7 @@ after_script:
                 "url": "https://app-travis-ci.com/montana/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}"
             }
         },
-        "type": "cipipeline_resource_request"
+        "type": "travis_ci.job.finished"
       }
     }
     EOF
