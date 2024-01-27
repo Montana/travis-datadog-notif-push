@@ -22,7 +22,7 @@ before_install:
    - chef gem install json_spec -v '~> 1.1.4'
    - chef gem install chef-handler-datadog
 
-after_success:
+after_script:
   - >
     curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     -H "Content-Type: application/json" \
