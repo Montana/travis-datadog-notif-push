@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/Montana/travis-datadog-notif-push.svg?branch=master)](https://app.travis-ci.com/Montana/travis-datadog-notif-push)
+
 # travis-datadog-notif-push
 Travis CI + Datadog notification push for Lockheed Martin using Chef via:
 
