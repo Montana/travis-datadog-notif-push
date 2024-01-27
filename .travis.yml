@@ -28,7 +28,7 @@ after_script:
   - >
     curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     -H "Content-Type: application/json" \
-    -H "DD-API-KEY: $DD_API_KEY" \
+    -H "DD-API-KEY: $DATADOG_API_KEY" \
     -d @- << EOF
     {
       "data": {
