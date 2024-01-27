@@ -6,10 +6,10 @@ addons:
       - chef-stable-precise
     packages:
       - chefdk
-      
+
 env:
   global:
-    - DATADOG_API_KEY={$DATADOG_API_KEY}
+    - DATADOG_API_KEY=${DATADOG_API_KEY} # Ensure proper variable syntax
     - DATADOG_EVENT_TITLE="Build Notification"
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
@@ -26,7 +26,7 @@ after_script:
   - >
     curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     -H "Content-Type: application/json" \
-    -H "DD-API-KEY: $DATADOG_API_KEY" \
+    -H "DD-API-KEY: ${DATADOG_API_KEY}" \
     -d @- << EOF
     {
       "data": {
@@ -36,7 +36,7 @@ after_script:
                 "unique_id": "${TRAVIS_BUILD_ID}",
                 "name": "${TRAVIS_REPO_SLUG}",
                 "git": {
-                    "repository_url": "https://github.com/${TRAVIS_REPO_SLUG}",
+                    "repository_url": "https://github.com/Montana/travis-datadog-notif-push",
                     "author_email": "montana@linux.com",
                     "sha": "${TRAVIS_COMMIT}"
                 },
@@ -44,7 +44,13 @@ after_script:
                 "start": "${TRAVIS_BUILD_STARTED_AT}",
                 "end": "${TRAVIS_BUILD_FINISHED_AT}",
                 "partial_retry": false,
-                "url": "https://travis-ci.com/github/${TRAVIS_REPO_SLUG}/
+                "url": "https://app.travis-ci.com/github/Montana/travis-datadog-notif-push?serverType=git"
+            }
+        },
+        "type": "cipipeline_resource_request"
+      }
+    }
+    EOF
 
 after_success:
   - >
@@ -63,9 +69,5 @@ after_failure:
     curl -X POST -H "Content-type: application/json" 
     -d "{
       \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
-      \"text\": \"${DATADOG_EVENT_TEXT} failed.\",
-      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
-      \"tags\": \"${DATADOG_EVENT_TAGS}\",
-      \"alert_type\": \"error\"
-    }" 
-    "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
+      \"text\": \"
+
