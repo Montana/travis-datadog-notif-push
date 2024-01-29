@@ -1,12 +1,6 @@
 ---
 language: node_js
-  
-addons:
-  apt:
-    sources:
-      - chef-stable-precise
-    packages:
-      - chefdk
+node_js: 20.11.0 
       
 env:
   global:
@@ -22,14 +16,6 @@ env:
 script: 
     - npm install --save-dev @datadog/datadog-ci
     - datadog-ci -h
-    
-before_install:
-   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-   - chef gem install coveralls -v '0.8.19'
-   - chef gem install json_spec -v '~> 1.1.4'
-   - chef gem install chef-handler-datadog
-
-install: skip
 
 after_success:
   - >
