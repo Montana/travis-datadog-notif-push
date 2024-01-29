@@ -1,5 +1,10 @@
+---
 language: python
-
+python:
+  - "3.7"
+install:
+  - pip install datadog
+  
 addons:
   apt:
     sources:
@@ -17,7 +22,6 @@ env:
     - DATADOG_EVENT_ALERT_TYPE="regression"
 
 script: 
-    - wget -q "https://github.com/DataDog/datadog-ci/releases/latest/download/datadog-ci_linux-x64" --output "/usr/local/bin/datadog-ci" && chmod +x /usr/local/bin/datadog-ci
     - datadog-ci gate evaluate 
     - pip install pytest
     - pytest test_math_functions.py 
