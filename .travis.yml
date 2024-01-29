@@ -14,24 +14,11 @@ env:
     - DATADOG_EVENT_TAGS="environment:ci,project:lmco/variable"
     - DATADOG_EVENT_ALERT_TYPE="regression"
 
-script: 
-    - npm install --save-dev @datadog/datadog-ci
-    - datadog-ci -h
-
-after_success:
-  - >
-    curl -X POST -H "Content-type: application/json" 
-    -d "{
-      \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
-      \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\",
-      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
-      \"tags\": \"${DATADOG_EVENT_TAGS}\",
-      \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"
-    }" 
-    "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
-curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
--H "Content-Type: application/json" \
--H "DD-API-KEY: $DD_API_KEY" \
+before_script:
+ - >
+   curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
+   -H "Content-Type: application/json" \
+   -H "DD-API-KEY: $DD_API_KEY" \
 -d @- << EOF
 {
   "data": {
@@ -57,6 +44,22 @@ curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
 }
 EOF                               
 
+script: 
+    - npm install --save-dev @datadog/datadog-ci
+    - datadog-ci -h
+
+after_success:
+  - >
+    curl -X POST -H "Content-type: application/json" 
+    -d "{
+      \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
+      \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\",
+      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
+      \"tags\": \"${DATADOG_EVENT_TAGS}\",
+      \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"
+    }" 
+    "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
+                     
 after_failure:
   - >
     curl -X POST -H "Content-type: application/json" 
