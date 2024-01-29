@@ -17,7 +17,6 @@ env:
 script: 
     - npm install --save-dev @datadog/datadog-ci
     - datadog-ci -h
-    - datadog-ci gate evaluate
 
 after_success:
   - >
@@ -30,6 +29,33 @@ after_success:
       \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"
     }" 
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
+
+curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
+-H "Content-Type: application/json" \
+-H "DD-API-KEY: $DD_API_KEY" \
+-d @- << EOF
+{
+  "data": {
+    "attributes": {
+        "resource": {
+            "level": "pipeline",
+            "unique_id": "845e5227-73c3-4c52-af69-9cf3a7529d09",
+            "name": "lmco",
+            "git": {
+                "repository_url": "https://github.com/Montana/travis-datadog-notif-push/blob/master/.travis.yml",
+                "author_email": "montana@linux.com",
+                "sha": "cf852e17dea14008ac83036430843a1c"
+            },
+            "status": "success",
+            "start": "2024-01-29T12:13:36-08:00",
+            "end": "2024-01-29T12:13:36-08:00",
+            "partial_retry": false,
+            "url": "http://provider.io/pipeline/0000"
+        }
+    },
+    "type": "cipipeline_resource_request"
+  }
+}
 
 after_failure:
   - >
