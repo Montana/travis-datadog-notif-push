@@ -20,8 +20,8 @@ env:
     - DATADOG_EVENT_ALERT_TYPE="regression"
 
 script: 
-    - npm install -g datadog-ci
-    - datadog-ci synthetics run-tests --config datadog-config.json
+    - npm install --save-dev @datadog/datadog-ci
+    - datadog-ci -h
     
 before_install:
    - eval "$(/opt/chefdk/bin/chef shell-init bash)"
