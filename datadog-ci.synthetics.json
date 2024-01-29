@@ -1,27 +1,27 @@
 {
-  "apiKey": "<DATADOG_API_KEY>",
-  "appKey": "<DATADOG_APPLICATION_KEY>",
-  "datadogSite": "datadoghq.com",
-  "failOnCriticalErrors": false,
-  "failOnMissingTests": false,
-  "failOnTimeout": true,
-  "files": ["{,!(node_modules)/**/*.synthetics.json"],
-  "global": {
-  },
   "tests": [
     {
-      "name": "Basic Test",
-      "request": {
-        "method": "GET",
-        "url": "https://travis-ci.com"
-      },
-      "assertions": [
-        {
-          "type": "statusCode",
-          "operator": "is",
-          "target": 200 
-        }
-      ]
+      "id": "<TEST_PUBLIC_ID>",
+      "config": {
+        "allowInsecureCertificates": true,
+        "basicAuth": {"username": "test", "password": "test"},
+        "body": "{\"fakeContent\":true}",
+        "bodyType": "application/json",
+        "cookies": "name1=value1;name2=value2;",
+        "defaultStepTimeout": 15,
+        "deviceIds": ["chrome.laptop_large"],
+        "executionRule": "skipped",
+        "followRedirects": true,
+        "headers": {"NEW_HEADER": "NEW VALUE"},
+        "locations": ["aws:us-east-1"],
+        "mobileApplicationVersionFilePath": "path/to/application.apk",
+        "pollingTimeout": 30000,
+        "retry": {"count": 2, "interval": 300},
+        "startUrl": "{{URL}}?static_hash={{STATIC_HASH}}",
+        "startUrlSubstitutionRegex": "s/(https://www.)(.*)/$1extra-$2/",
+        "testTimeout": 300,
+        "variables": {"MY_VARIABLE": "new title"}
+      }
     }
-  ] 
+  ]
 }
