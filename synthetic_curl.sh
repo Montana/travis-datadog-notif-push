@@ -1,72 +1,14 @@
-curl -X POST "https://api.datadoghq.com/api/v1/synthetics/tests/api" \
--H "Accept: application/json" \
--H "Content-Type: application/json" \
--H "DD-API-KEY: ${DD_API_KEY}" \
--H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
--d @- << EOF
-{
-  "config": {
-    "assertions": [
-      {
-        "operator": "lessThan",
-        "target": 1000,
-        "type": "responseTime"
-      },
-      {
-        "operator": "is",
-        "target": 200,
-        "type": "statusCode"
-      },
-      {
-        "operator": "is",
-        "property": "content-type",
-        "target": "text/html; charset=UTF-8",
-        "type": "header"
-      }
-    ],
-    "request": {
-      "method": "GET",
-      "url": "https://example.com"
-    }
-  },
-  "locations": [
-    "azure:eastus",
-    "aws:eu-west-3"
-  ],
-  "message": "MY_NOTIFICATION_MESSAGE",
-  "name": "MY_TEST_NAME",
-  "options": {
-    "min_failure_duration": 0,
-    "min_location_failed": 1,
-    "monitor_options": {
-      "include_tags": true,
-      "locked": false,
-      "new_host_delay": 300,
-      "notify_audit": false,
-      "notify_no_data": false,
-      "renotify_interval": 0
-    },
-    "tick_every": 60
-  },
-  "status": "live",
-  "subtype": "http",
-  "tags": [
-    "env:production"
-  ],
-  "type": "api"
-}
-EOF
-## Create a Multistep API test
-# Example of a multistep API test running on a fake furniture store.
-# It creates a card, select a product and then add the product to the card.
+#!/bin/bash
 
-# Curl command
+DD_API_KEY=<your_dd_api_key>
+DD_APP_KEY=<your_dd_app_key>
+
 curl -X POST "https://api.datadoghq.com/api/v1/synthetics/tests/api" \
--H "Accept: application/json" \
--H "Content-Type: application/json" \
--H "DD-API-KEY: ${DD_API_KEY}" \
--H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
--d @- << EOF
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+  -d @- << EOF
 {
   "config": {
     "steps": [
