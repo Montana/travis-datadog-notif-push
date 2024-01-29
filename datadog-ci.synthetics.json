@@ -7,7 +7,6 @@
   "failOnTimeout": true,
   "files": ["{,!(node_modules)/**/*.synthetics.json"],
   "global": {
-    // global config
   },
   "tests": [
     {
