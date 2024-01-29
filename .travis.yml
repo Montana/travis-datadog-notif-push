@@ -29,7 +29,6 @@ after_success:
       \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"
     }" 
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
-
 curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
 -H "Content-Type: application/json" \
 -H "DD-API-KEY: $DD_API_KEY" \
@@ -56,6 +55,7 @@ curl -X POST "https://api.datadoghq.com/api/v2/ci/pipeline" \
     "type": "cipipeline_resource_request"
   }
 }
+EOF                               
 
 after_failure:
   - >
