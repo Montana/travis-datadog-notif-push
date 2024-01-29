@@ -9,4 +9,4 @@ Travis CI + Datadog notification push for Lockheed Martin using Chef via:
    - chef gem install json_spec -v '~> 1.1.4'
    - chef gem install chef-handler-datadog
 ```
-Then of course all the complex things with env vars, etc etc, etc.
+Then of course all the complex things with env vars, etc etc, etc, this is using the API key not application key. 
