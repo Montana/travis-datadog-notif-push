@@ -1,0 +1,25 @@
+{
+  "apiKey": "<DATADOG_API_KEY>",
+  "appKey": "<DATADOG_APPLICATION_KEY>",
+  "datadogSite": "datadoghq.com", // You can use another Datadog site in https://docs.datadoghq.com/getting_started/site/. By default, requests are sent to Datadog US1.
+  "failOnCriticalErrors": false,
+  "failOnMissingTests": false,
+  "failOnTimeout": true,
+  "files": ["{,!(node_modules)/**/}*.synthetics.json"],
+  "global": {
+    "allowInsecureCertificates": true,
+    "basicAuth": {"username": "test", "password": "test"},
+    "body": "{\"fakeContent\":true}",
+    "bodyType": "application/json",
+    "cookies": "name1=value1;name2=value2;",
+    "deviceIds": ["laptop_large"],
+    "followRedirects": true,
+    "headers": {"<NEW_HEADER>": "<NEW_VALUE>"},
+    "locations": ["aws:us-west-1"],
+    "retry": {"count": 2, "interval": 300},
+    "executionRule": "blocking",
+    "startUrlSubstitutionRegex": "s/(https://www.)(.*)/$1extra-$2/",
+    "startUrl": "{{URL}}?static_hash={{STATIC_HASH}}",
+    "variables": {"titleVariable": "new value"},
+    "pollingTimeout": 180000
+  },
