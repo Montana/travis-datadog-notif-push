@@ -1,9 +1,5 @@
 ---
-language: python
-python:
-  - "3.7"
-install:
-  - pip install datadog
+language: node_js
   
 addons:
   apt:
@@ -22,10 +18,9 @@ env:
     - DATADOG_EVENT_ALERT_TYPE="regression"
 
 script: 
-    - datadog-ci gate evaluate 
-    - pip install pytest
-    - pytest test_math_functions.py 
-
+    - npm install -g datadog-ci
+    - datadog-ci synthetics run-tests --config datadog-config.json
+    
 before_install:
    - eval "$(/opt/chefdk/bin/chef shell-init bash)"
    - chef gem install coveralls -v '0.8.19'
