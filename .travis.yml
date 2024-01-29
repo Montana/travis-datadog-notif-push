@@ -11,6 +11,8 @@ addons:
 env:
   global:
     - DATADOG_API_KEY={$DATADOG_API_KEY}
+    - DD_API_KEY={$DD_API_KEY} 
+    - DD_APP_KEY={$DD_APP_KEY}
     - DATADOG_EVENT_TITLE="Build Notification"
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
