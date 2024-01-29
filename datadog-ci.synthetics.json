@@ -1,26 +1,37 @@
 {
-  "tests": [
+  "name": "Travis CI Synthetic Testing",
+  "type": "api",
+  "request": {
+    "method": "GET",
+    "url": "https://www.travis-ci.com",
+    "timeout": 1000
+  },
+  "assertions": [
     {
-      "id": "<TEST_PUBLIC_ID>",
-      "config": {
-        "allowInsecureCertificates": true,
-        "basicAuth": {"username": "test", "password": "test"},
-        "body": "{\"fakeContent\":true}",
-        "bodyType": "application/json",
-        "cookies": "name1=value1;name2=value2;",
-        "defaultStepTimeout": 15,
-        "deviceIds": ["chrome.laptop_large"],
-        "executionRule": "skipped",
-        "followRedirects": true,
-        "headers": {"NEW_HEADER": "NEW VALUE"},
-        "locations": ["aws:us-east-1"],
-        "pollingTimeout": 30000,
-        "retry": {"count": 2, "interval": 300},
-        "startUrl": "{{URL}}?static_hash={{STATIC_HASH}}",
-        "startUrlSubstitutionRegex": "s/(https://www.)(.*)/$1extra-$2/",
-        "testTimeout": 300,
-        "variables": {"MY_VARIABLE": "new title"}
-      }
+      "operator": "statusCode", 
+      "type": "numeric",
+      "target": 200
+    },
+    {
+      "operator": "contentLength",
+      "type": "numeric",
+      "target": 1000,
+      "min": 500,
+      "max": 1500
+    },
+    {
+     "operator": "responseTime",
+     "type": "numeric",
+     "target": 500,
+     "min": 100,
+     "max": 1000
     }
-  ]
+  ],
+  "locations": [
+    "aws:us-east-1",
+    "aws:eu-central-1"
+  ],
+  "options": {
+    "tick_every": 900
+  } 
 }
