@@ -1,7 +1,7 @@
 {
   "apiKey": "<DATADOG_API_KEY>",
   "appKey": "<DATADOG_APPLICATION_KEY>",
-  "datadogSite": "datadoghq.com", // You can use another Datadog site in https://docs.datadoghq.com/getting_started/site/. By default, requests are sent to Datadog US1.
+  "datadogSite": "datadoghq.com", 
   "failOnCriticalErrors": false,
   "failOnMissingTests": false,
   "failOnTimeout": true,
@@ -22,4 +22,5 @@
     "startUrl": "{{URL}}?static_hash={{STATIC_HASH}}",
     "variables": {"titleVariable": "new value"},
     "pollingTimeout": 180000
-  },
+   }
+}
