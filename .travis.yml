@@ -1,5 +1,7 @@
 ---
 dist: focal 
+vm:
+  size: 2x-large	
 language: node_js
 node_js: 20.11.0 
       
