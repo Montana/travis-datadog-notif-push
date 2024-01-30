@@ -1,46 +1,34 @@
----
 dist: focal 
 vm:
-  size: 2x-large	
+  size: 2x-large
 language: node_js
-node_js: 20.11.0 
-      
+node_js:
+  - "20.11.0"
+
 env:
   global:
-    - DATADOG_API_KEY={$DATADOG_API_KEY}
-    - DD_API_KEY={$DD_API_KEY} 
-    - DD_APP_KEY={$DD_APP_KEY}
+    - DATADOG_API_KEY=${DATADOG_API_KEY}
+    - DD_API_KEY=${DD_API_KEY} 
+    - DD_APP_KEY=${DD_APP_KEY}
     - DATADOG_EVENT_TITLE="Build Notification"
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
     - DATADOG_EVENT_TAGS="environment:ci,project:lmco/variable"
-    - DATADOG_EVENT_ALERT_TYPE="events"
+    - DATADOG_EVENT_ALERT_TYPE="time_window"
 
-script: 
-    - npm install --save-dev @datadog/datadog-ci
-    - datadog-ci -h
-    - datadog-ci synthetics run-tests --public-id abc-def-ghi
+before_script:
+  - npm install --save-dev @datadog/datadog-ci
+
+script:
+  - datadog-ci -h
+  - datadog-ci synthetics run-tests --public-id abc-def-ghi
 
 after_success:
-  - >
-    curl -X POST -H "Content-type: application/json" 
-    -d "{
-      \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
-      \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\",
-      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
-      \"tags\": \"${DATADOG_EVENT_TAGS}\",
-      \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"
-    }" 
+  - curl -X POST -H "Content-type: application/json" \
+    -d "{\"title\": \"${DATADOG_EVENT_TITLE} - Success\", \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\", \"priority\": \"${DATADOG_EVENT_PRIORITY}\", \"tags\": \"${DATADOG_EVENT_TAGS}\", \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"}" \
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
-                     
+
 after_failure:
-  - >
-    curl -X POST -H "Content-type: application/json" 
-    -d "{
-      \"title\": \"${DATADOG_EVENT_TITLE} - Failure\",
-      \"text\": \"${DATADOG_EVENT_TEXT} failed.\",
-      \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
-      \"tags\": \"${DATADOG_EVENT_TAGS}\",
-      \"alert_type\": \"error\"
-    }" 
+  - curl -X POST -H "Content-type: application/json" \
+    -d "{\"title\": \"${DATADOG_EVENT_TITLE} - Failure\", \"text\": \"${DATADOG_EVENT_TEXT} failed.\", \"priority\": \"${DATADOG_EVENT_PRIORITY}\", \"tags\": \"${DATADOG_EVENT_TAGS}\", \"alert_type\": \"error\"}" \
     "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
