@@ -14,7 +14,7 @@ env:
     - DATADOG_EVENT_TEXT="Travis CI build for Lockheed Martin"
     - DATADOG_EVENT_PRIORITY="high"
     - DATADOG_EVENT_TAGS="environment:ci,project:lmco/variable"
-    - DATADOG_EVENT_ALERT_TYPE="regression"
+    - DATADOG_EVENT_ALERT_TYPE="events"
 
 script: 
     - npm install --save-dev @datadog/datadog-ci
