@@ -1,3 +1,5 @@
+DATADOG_API_KEY=$(DATADOG_API_KEY)
+
 METRIC_NAME="example.ping"
 
 CURRENT_TIME=$(date +%s)
@@ -6,7 +8,7 @@ METRIC_VALUE=1
 
 curl -X POST "https://api.datadog.com/api/v1/series" \
 -H "Content-Type: application/json" \
--H "DD-API-KEY: $DD_API_KEY" \
+-H "DATADOG_API_KEY: $DATADOG_API_KEY" \
 -d "{
       'series' : 
         [{
