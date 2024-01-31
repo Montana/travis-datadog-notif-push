@@ -1,27 +1,17 @@
-DATADOG_API_KEY=$(DATADOG_API_KEY)
+#!/bin/bash
 
-METRIC_NAME="example.ping"
+# This will push monitoring events to the "Mendy" account in Datadog. 
 
-CURRENT_TIME=$(date +%s)
+DATADOG_EVENT_TITLE="$(echo "$1" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_TEXT="$(echo "$2" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_PRIORITY="$(echo "$3" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_TAGS="$(echo "$4" | sed -r 's/[^a-zA-Z0-9.,_-]/_/g')"
+DATADOG_EVENT_ALERT_TYPE="$(echo "$5" | sed 's/[^a-zA-Z0-9._-]/_/g')"
 
-METRIC_VALUE=1
-
-curl -X POST "https://api.datadog.com/api/v1/series" \
--H "Content-Type: application/json" \
--H "DATADOG_API_KEY: $DATADOG_API_KEY" \
--d "{
-      'series' : 
-        [{
-          'metric': '$METRIC_NAME',
-          'points': [
-              [$CURRENT_TIME, $METRIC_VALUE]
-          ],
-          'type': 'gauge',
-          'host': 'example.com',
-          'tags': [
-              'environment:ci'
-          ]
-        }]
-    }"
-
-echo "Ping sent to Datadog."
+curl -X POST -H "Content-type: application/json" -d "{
+  \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
+  \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\",
+  \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
+  \"tags\": \"${DATADOG_EVENT_TAGS}\",
+  \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"  
+}" "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
