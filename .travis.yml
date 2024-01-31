@@ -19,7 +19,7 @@ env:
 script: 
     - npm install --save-dev @datadog/datadog-ci
     - datadog-ci -h
-    - datadog-ci synthetics run-tests --public-id abc-def-ghi
+    - datadog-ci synthetics run-tests --public-id travisci
     - chmod +x ./synthetic_curl.sh; ./synthetic_curl.sh 
 
 after_success:
