@@ -1,12 +1,24 @@
 [![Build Status](https://app.travis-ci.com/Montana/travis-datadog-notif-push.svg?branch=master)](https://app.travis-ci.com/Montana/travis-datadog-notif-push)
 
 # travis-datadog-notif-push
-Travis CI + Datadog notification push for Lockheed Martin using Chef via:
+Travis CI + Datadog notification push for Lockheed Martin:
 
-```yaml
-   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-   - chef gem install coveralls -v '0.8.19'
-   - chef gem install json_spec -v '~> 1.1.4'
-   - chef gem install chef-handler-datadog
+```bash
+  #!/bin/bash
+  # This will push monitoring events to the "Mendy" account in Datadog. 
+
+DATADOG_EVENT_TITLE="$(echo "$1" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_TEXT="$(echo "$2" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_PRIORITY="$(echo "$3" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+DATADOG_EVENT_TAGS="$(echo "$4" | sed -r 's/[^a-zA-Z0-9.,_-]/_/g')"
+DATADOG_EVENT_ALERT_TYPE="$(echo "$5" | sed 's/[^a-zA-Z0-9._-]/_/g')"
+
+curl -X POST -H "Content-type: application/json" -d "{
+  \"title\": \"${DATADOG_EVENT_TITLE} - Success\",
+  \"text\": \"${DATADOG_EVENT_TEXT} succeeded.\",
+  \"priority\": \"${DATADOG_EVENT_PRIORITY}\",
+  \"tags\": \"${DATADOG_EVENT_TAGS}\",
+  \"alert_type\": \"${DATADOG_EVENT_ALERT_TYPE}\"  
+}" "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
 ```
-Then of course all the complex things with env vars, etc etc, etc, this is using the API key not application key. Once pushed this should start an event. 
+Then of course all the complex things with env vars, etc etc, etc, this is using the API key on top of the Datadog application key. Once pushed this should start an event. 
