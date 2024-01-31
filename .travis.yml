@@ -19,7 +19,8 @@ env:
 script: 
     - npm install --save-dev @datadog/datadog-ci
     - datadog-ci -h
-    - datadog-ci synthetics tunnel create
+    - datadog-ci -v 
+    - datadog-ci -V
     - chmod +x ./synthetic_curl.sh; ./synthetic_curl.sh 
 
 after_success:
