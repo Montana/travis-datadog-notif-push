@@ -25,6 +25,7 @@ script:
     - datadog-ci -h
     - datadog-ci -v 
     - chmod +x ./synthetic_curl.sh; ./synthetic_curl.sh 
+    - chmod +x ./synthetic_awk.sh; ./synthetic_awk.sh
 
 after_success:
   - >
