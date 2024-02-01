@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Push processed events and enforce no trailing commas.
+
 PROCESSED_DATADOG_EVENT_TITLE=$(echo "$DATADOG_EVENT_TITLE" | sed 's/[^a-zA-Z0-9._-]/_/g')
 PROCESSED_DATADOG_EVENT_TEXT=$(echo "$DATADOG_EVENT_TEXT" | awk '{gsub(/[^a-zA-Z0-9._-]/, "_"); print}')
 PROCESSED_DATADOG_EVENT_PRIORITY=$(echo "$DATADOG_EVENT_PRIORITY" | sed 's/[^a-zA-Z0-9._-]/_/g')
